@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.android.application)
+    alias(libs.plugins.google.gms.google.services)  // Use your version catalog for Google services
 }
 
 android {
@@ -25,6 +26,7 @@ android {
             )
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -32,12 +34,20 @@ android {
 }
 
 dependencies {
-
+    // AndroidX and UI dependencies
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
     implementation(libs.constraintlayout)
+
+    // Firebase dependencies
+    implementation(platform("com.google.firebase:firebase-bom:32.0.0"))  // Latest Firebase BOM
+    implementation("com.google.firebase:firebase-auth")  // Firebase Authentication
+    implementation("com.google.firebase:firebase-database")  // Firebase Realtime Database
+
+    // Testing dependencies
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
 }
+

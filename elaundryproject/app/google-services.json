@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "36308749406",
+    "firebase_url": "https://elaundryproject-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "elaundryproject",
+    "storage_bucket": "elaundryproject.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:36308749406:android:52d528ec9cda581f9478cf",
+        "android_client_info": {
+          "package_name": "com.example.elaundryproject"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCW9pyOG74iqsEXmRjYPs0C_3sYVP1B1h4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
