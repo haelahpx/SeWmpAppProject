@@ -1,6 +1,6 @@
 plugins {
     alias(libs.plugins.android.application)
-    alias(libs.plugins.google.gms.google.services)  // Use your version catalog for Google services
+    alias(libs.plugins.google.gms.google.services)
 }
 
 android {
@@ -41,13 +41,19 @@ dependencies {
     implementation(libs.constraintlayout)
 
     // Firebase dependencies
-    implementation(platform("com.google.firebase:firebase-bom:32.0.0"))  // Latest Firebase BOM
-    implementation("com.google.firebase:firebase-auth")  // Firebase Authentication
-    implementation("com.google.firebase:firebase-database")  // Firebase Realtime Database
+    implementation(platform("com.google.firebase:firebase-bom:32.0.0"))
+    implementation("com.google.firebase:firebase-auth")
+    implementation("com.google.firebase:firebase-database")
+    implementation("com.google.android.gms:play-services-location:21.0.1")  // Latest version
+
+    // ActivityResultContracts dependencies
+    implementation("androidx.activity:activity-ktx:1.6.0")
+    implementation("androidx.activity:activity:1.6.0")
+
+    implementation ("androidx.recyclerview:recyclerview:1.3.0")
 
     // Testing dependencies
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
 }
-

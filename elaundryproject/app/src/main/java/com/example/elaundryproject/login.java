@@ -55,12 +55,10 @@ public class login extends AppCompatActivity {
             }
         });
 
-        // Set up the Register link
         SpannableString spannableString = new SpannableString("Don't have an account? Register here");
         ClickableSpan clickableSpan = new ClickableSpan() {
             @Override
             public void onClick(@NonNull View widget) {
-                // When clicked, navigate to the Register activity
                 Intent intent = new Intent(login.this, register.class);
                 startActivity(intent);
             }
@@ -75,10 +73,9 @@ public class login extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-                    // Login successful, redirect to MainActivity
                     Intent intent = new Intent(login.this, MainActivity.class);
                     startActivity(intent);
-                    finish();  // Close the login activity
+                    finish();
                     Toast.makeText(login.this, "Login Successful", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(login.this, "Login Failed", Toast.LENGTH_SHORT).show();
