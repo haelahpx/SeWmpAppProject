@@ -1,6 +1,7 @@
 package com.example.elaundryproject;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +33,16 @@ public class LaundryAdapter extends RecyclerView.Adapter<LaundryAdapter.ViewHold
         holder.addressTextView.setText(shop.address);
         holder.phoneTextView.setText(shop.phone);
         holder.distanceTextView.setText(String.format("Distance: %.2f km", shop.getDistance()));
+
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(context, laundrypage.class);
+            intent.putExtra("shopName", shop.name);
+            intent.putExtra("shopAddress", shop.address);
+            intent.putExtra("shopPhone", shop.phone);
+            intent.putExtra("shopDistance", shop.getDistance());
+            context.startActivity(intent);
+        });
+
     }
 
     @Override

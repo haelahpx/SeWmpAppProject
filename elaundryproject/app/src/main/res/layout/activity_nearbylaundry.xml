@@ -1,22 +1,71 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/white">
 
+    <!-- Title Section -->
+    <TextView
+        android:id="@+id/locationTextView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nearby Laundry"
+        android:textSize="24sp"
+        android:fontFamily="sans-serif-medium"
+        android:textStyle="bold"
+        android:textColor="@color/blue"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp" />
+
+    <!-- Subtitle Section -->
     <TextView
         android:id="@+id/locationTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Fetching location..."
-        android:textSize="18sp"
-        android:layout_alignParentTop="true"
+        android:text="Fetching laundries near your location..."
+        android:textSize="16sp"
+        android:fontFamily="sans-serif"
+        android:textColor="@color/blue"
+        android:layout_below="@id/locationTextView1"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp" />
+        android:layout_marginTop="8dp" />
 
+    <!-- Loading Section -->
+    <RelativeLayout
+        android:id="@+id/loadingContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone">
 
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:indeterminateTint="@color/blue"
+            android:layout_centerHorizontal="true" />
+
+        <TextView
+            android:id="@+id/loadingText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/progressBar"
+            android:layout_marginTop="12dp"
+            android:text="Loading, please wait..."
+            android:textSize="14sp"
+            android:fontFamily="sans-serif"
+            android:textColor="@color/blue"
+            android:layout_centerHorizontal="true" />
+    </RelativeLayout>
+
+    <!-- RecyclerView for Laundry List -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/laundryListView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@drawable/rounded_bg"
+        android:padding="16dp"
         android:layout_below="@id/locationTextView"
-        android:layout_marginTop="16dp"/>
+        android:layout_marginTop="20dp"
+        android:visibility="gone" />
 </RelativeLayout>
