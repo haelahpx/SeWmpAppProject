@@ -1,8 +1,11 @@
 package com.example.elaundryproject;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.database.DataSnapshot;
@@ -12,63 +15,55 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 public class laundrypage extends AppCompatActivity {
-
-    private DatabaseReference databaseReference; // Firebase Database Reference
-    private TextView priceTextView, addressTextView; // TextViews for displaying price and address
+    private TextView laundryNameTextView;
+    private TextView addressTextView;
+    private TextView phoneTextView;
+    private TextView priceTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_laundrypage);
 
-        // Initialize TextViews
-        priceTextView = findViewById(R.id.hargaPerkilo);
-        addressTextView = findViewById(R.id.address);
+        laundryNameTextView = findViewById(R.id.laundryName);
+        addressTextView = findViewById(R.id.addressTextView);
+        phoneTextView = findViewById(R.id.phoneTextView);
+        priceTextView = findViewById(R.id.priceTextView);
 
-        // Initialize Firebase Database Reference
-        databaseReference = FirebaseDatabase.getInstance().getReference();
+        Intent intent = getIntent();
+        String shopId = intent.getStringExtra("shopId");
+        String shopName = intent.getStringExtra("shopName");
+        String shopAddress = intent.getStringExtra("shopAddress");
+        String shopPhone = intent.getStringExtra("shopPhone");
 
+        laundryNameTextView.setText(shopName);
+        addressTextView.setText(shopAddress);
+        phoneTextView.setText(shopPhone);
+
+        fetchLaundryDetails(shopId);
     }
 
-    private void fetchCategoryPrice(String categoryId, String categoryName) {
-        // Fetch price from "categories" -> categoryId -> categoryName
-        databaseReference.child("categories").child(categoryId).child(categoryName)
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot snapshot) {
-                        if (snapshot.exists() && snapshot.child("price").getValue() != null) {
-                            String price = snapshot.child("price").getValue(String.class);
-                            priceTextView.setText("Harga Perkilo: " + price + " IDR");
-                        } else {
-                            priceTextView.setText("Price not available");
-                        }
-                    }
+    private void fetchLaundryDetails(String shopId) {
+        DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference();
 
-                    @Override
-                    public void onCancelled(DatabaseError error) {
-                        priceTextView.setText("Failed to load price");
+        databaseRef.child("categories").orderByChild("shopId").equalTo(shopId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    for (DataSnapshot categorySnapshot : snapshot.getChildren()) {
+                        String categoryPrice = categorySnapshot.child("price").getValue(String.class);
+                        priceTextView.setText(categoryPrice != null ? "Price: " + categoryPrice + " / kg" : "Unknown Price");
+                        break;
                     }
-                });
-    }
+                } else {
+                    priceTextView.setText("Price not available");
+                }
+            }
 
-    private void fetchLaundryShopAddress(String shopId) {
-        // Fetch address from "laundry_shops" -> shopId
-        databaseReference.child("laundry_shops").child(shopId)
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot snapshot) {
-                        if (snapshot.exists() && snapshot.child("address").getValue() != null) {
-                            String address = snapshot.child("address").getValue(String.class);
-                            addressTextView.setText("Address: " + address);
-                        } else {
-                            addressTextView.setText("Address not available");
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError error) {
-                        addressTextView.setText("Failed to load address");
-                    }
-                });
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(laundrypage.this, "Failed to fetch price: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

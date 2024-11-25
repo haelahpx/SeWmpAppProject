@@ -1,13 +1,13 @@
 package com.example.elaundryproject;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import java.util.ArrayList;
 
 public class LaundryAdapter extends RecyclerView.Adapter<LaundryAdapter.ViewHolder> {
@@ -29,20 +29,13 @@ public class LaundryAdapter extends RecyclerView.Adapter<LaundryAdapter.ViewHold
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         LaundryShop shop = laundryShops.get(position);
-        holder.nameTextView.setText(shop.name);
-        holder.addressTextView.setText(shop.address);
-        holder.phoneTextView.setText(shop.phone);
-        holder.distanceTextView.setText(String.format("Distance: %.2f km", shop.getDistance()));
 
-        holder.itemView.setOnClickListener(v -> {
-            Intent intent = new Intent(context, laundrypage.class);
-            intent.putExtra("shopName", shop.name);
-            intent.putExtra("shopAddress", shop.address);
-            intent.putExtra("shopPhone", shop.phone);
-            intent.putExtra("shopDistance", shop.getDistance());
-            context.startActivity(intent);
-        });
+        // Set data from LaundryShop
+        //holder.nameTextView.setText(shop.getName());
+        //holder.addressTextView.setText(shop.getAddress());
 
+        // Display location if available
+        //holder.locationTextView.setText(String.format("Lat: %.6f, Lng: %.6f", shop.getLatitude(), shop.getLongitude()));
     }
 
     @Override
@@ -51,15 +44,13 @@ public class LaundryAdapter extends RecyclerView.Adapter<LaundryAdapter.ViewHold
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView nameTextView, addressTextView, phoneTextView, distanceTextView;
+        TextView nameTextView, addressTextView, locationTextView;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             nameTextView = itemView.findViewById(R.id.nameTextView);
             addressTextView = itemView.findViewById(R.id.addressTextView);
-            phoneTextView = itemView.findViewById(R.id.phoneTextView);
-            distanceTextView = itemView.findViewById(R.id.distanceTextView);
+            locationTextView = itemView.findViewById(R.id.locationTextView);
         }
     }
 }
-

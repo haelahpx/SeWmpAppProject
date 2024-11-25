@@ -40,9 +40,6 @@ dependencies {
     implementation(libs.activity)
     implementation(libs.constraintlayout)
 
-    implementation ("com.google.zxing:core:3.4.1")
-    implementation ("com.journeyapps:zxing-android-embedded:4.2.0")
-
     // Firebase dependencies
     implementation(platform("com.google.firebase:firebase-bom:32.0.0"))
     implementation("com.google.firebase:firebase-auth")
@@ -54,6 +51,8 @@ dependencies {
     implementation("androidx.activity:activity:1.6.0")
 
     implementation ("androidx.recyclerview:recyclerview:1.3.0")
+
+    implementation("com.google.code.gson:gson:2.10.1")
 
     // Testing dependencies
     testImplementation(libs.junit)
