@@ -41,9 +41,6 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuViewHolder
         holder.iconImageView.setImageResource(menu.getIconResource());
     }
 
-
-
-
     @Override
     public int getItemCount() {
         return menuList.size(); // Menampilkan seluruh data

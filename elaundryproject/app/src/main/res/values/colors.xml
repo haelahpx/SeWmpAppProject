@@ -9,5 +9,10 @@
     <color name="primary">#1ba1dd</color>
     <color name="gray">#b8b9bb</color>
     <color name="white">#FFFFFF</color>
-    <color name="primaryDark">#467CC2</color> <!-- Contoh warna -->
+    <color name="primaryDark">#467CC2</color>
+    <color name="blue">#2979FF</color>
+    <color name="bluePrimary">#1976D2</color> <!-- Dark Blue -->
+    <color name="blueSecondary">#64B5F6</color> <!-- Light Blue -->
+
+    <!-- Contoh warna -->
 </resources>

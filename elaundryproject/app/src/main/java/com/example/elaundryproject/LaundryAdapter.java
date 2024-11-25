@@ -1,6 +1,7 @@
 package com.example.elaundryproject;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,12 +31,21 @@ public class LaundryAdapter extends RecyclerView.Adapter<LaundryAdapter.ViewHold
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         LaundryShop shop = laundryShops.get(position);
 
-        // Set data from LaundryShop
-        //holder.nameTextView.setText(shop.getName());
-        //holder.addressTextView.setText(shop.getAddress());
+        holder.nameTextView.setText(shop.getName());
+        holder.addressTextView.setText(shop.getAddress());
+        holder.locationTextView.setText(
+                String.format("Lat: %.6f, Lng: %.6f", shop.getLatitude(), shop.getLongitude())
+        );
 
-        // Display location if available
-        //holder.locationTextView.setText(String.format("Lat: %.6f, Lng: %.6f", shop.getLatitude(), shop.getLongitude()));
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(context, laundrypage.class);
+            intent.putExtra("shopName", shop.name);
+            intent.putExtra("shopAddress", shop.address);
+            intent.putExtra("shopPhone", shop.phone);
+            intent.putExtra("shopDistance", shop.getDistance());
+            context.startActivity(intent);
+        });
+
     }
 
     @Override

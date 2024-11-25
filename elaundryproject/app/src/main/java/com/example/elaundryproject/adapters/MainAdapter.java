@@ -7,12 +7,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.example.elaundryproject.LaundryShop;
 import com.example.elaundryproject.ModelResults;
 import com.example.elaundryproject.R;
+import com.example.elaundryproject.LaundryShop;
 import com.example.elaundryproject.laundrypage;
 
 import java.util.ArrayList;

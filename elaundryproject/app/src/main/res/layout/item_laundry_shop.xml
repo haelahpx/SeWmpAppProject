@@ -1,42 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="8dp"
-    android:layout_marginBottom="8dp"
-    android:elevation="2dp"
-    android:radius="8dp">
+    android:orientation="vertical"
+    android:padding="16dp">
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/shopName"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:text="Shop Name"
+        android:textSize="18sp"
+        android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/tvShopName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Shop Name" />
+    <TextView
+        android:id="@+id/shopAddress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Shop Address"
+        android:textSize="14sp" />
 
-        <TextView
-            android:id="@+id/tvShopLocation"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Shop Location" />
+    <TextView
+        android:id="@+id/shopPhone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Phone Number"
+        android:textSize="14sp" />
 
-        <TextView
-            android:id="@+id/tvShopPhone"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Shop Phone" />
-
-        <TextView
-            android:id="@+id/tvShopDistance"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Shop Distance" />
-
-
-    </LinearLayout>
-</androidx.cardview.widget.CardView>
+    <TextView
+        android:id="@+id/shopDistance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Distance"
+        android:textSize="14sp" />
+</LinearLayout>

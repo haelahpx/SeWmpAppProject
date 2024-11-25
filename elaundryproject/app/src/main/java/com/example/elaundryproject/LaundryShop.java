@@ -1,44 +1,57 @@
 package com.example.elaundryproject;
 
 public class LaundryShop {
-    public int id;
-    public String address;
     public String name;
+    public String address;
     public String phone;
+    private double distance;
     public double latitude;
     public double longitude;
-    private double distance;
 
-
+    // Default constructor for Firebase
     public LaundryShop() {}
 
-    public LaundryShop(int id, String address, String name, String phone, double latitude, double longitude) {
-        this.id = id;
-        this.address = address;
+    // Constructor with parameters (Ensure latitude and longitude are properly initialized)
+    public LaundryShop(String name, String address, String phone, double distance, double latitude, double longitude) {
         this.name = name;
+        this.address = address;
         this.phone = phone;
+        this.distance = distance;
         this.latitude = latitude;
         this.longitude = longitude;
     }
 
-    // Getter for address
-    public String getAddress() {
-        return address;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-
-    // Getter for name
+    // Getters and Setters
     public String getName() {
         return name;
     }
 
-    // Getter for phone
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
     public String getPhone() {
         return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public double getDistance() {
+        return distance;
+    }
+
+    public void setDistance(double distance) {
+        this.distance = distance;
     }
 
     // Getter for latitude
@@ -51,14 +64,12 @@ public class LaundryShop {
         return longitude;
     }
 
-    // Getter for distance (optional)
-    public double getDistance() {
-        return distance;
+    // Setters for latitude and longitude
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
     }
 
-    // Setter for distance (optional)
-    public void setDistance(double distance) {
-        this.distance = distance;
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
     }
-
 }
