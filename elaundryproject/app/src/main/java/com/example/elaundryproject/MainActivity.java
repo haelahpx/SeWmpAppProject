@@ -17,6 +17,7 @@ import com.example.elaundryproject.adapters.LaundryShopAdapter;
 import com.example.elaundryproject.adapters.MenuAdapter;
 import com.example.elaundryproject.models.ModelMenu;
 import com.example.elaundryproject.LaundryShop;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -60,7 +61,6 @@ public class MainActivity extends AppCompatActivity {
         laundryListView = findViewById(R.id.laundryListView);
         userNameTextView = findViewById(R.id.userNameTextView);
         btnLaundryShops = findViewById(R.id.btnLaundryShops);
-        btnQrScan = findViewById(R.id.btnQrScan); // Initialize QR Scan Button
 
         // Profile Icon Listener
         ImageView profileIcon = findViewById(R.id.profileIcon);
@@ -93,10 +93,21 @@ public class MainActivity extends AppCompatActivity {
             startActivity(new Intent(MainActivity.this, NearbyLaundry.class));
         });
 
-        // Button Click Listener for QR Scan
-        btnQrScan.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, qrscan.class);
-            startActivity(intent);
+
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            int itemId = item.getItemId();
+            if (itemId == R.id.nav_home) {
+                startActivity(new Intent(this, MainActivity.class));
+                return true;
+            } else if (itemId == R.id.nav_nearby) {
+                startActivity(new Intent(this, qrscan.class));
+                return true;
+            } else if (itemId == R.id.nav_profile) {
+                startActivity(new Intent(this, EditUsernameActivity.class));
+                return true;
+            }
+            return false;
         });
 
         // Load Laundry Shops

@@ -8,11 +8,11 @@
 
     <!-- AppBar for Toolbar -->
     <com.google.android.material.appbar.AppBarLayout
-        android:layout_marginTop="10pt"
-        android:layout_marginHorizontal="10pt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
+        android:layout_marginTop="10pt"
+        android:layout_marginHorizontal="8pt"
         app:elevation="4dp">
 
         <!-- Include Toolbar -->
@@ -30,7 +30,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="16dp">
 
@@ -42,8 +42,8 @@
                 android:text="View Nearby Laundry Shops"
                 android:textSize="16sp"
                 android:textColor="@android:color/white"
-                android:background="@drawable/bg_circle_radius" />
-
+                android:background="@drawable/bg_circle_radius"
+                android:layout_marginBottom="16dp" />
 
             <!-- Categories Title -->
             <TextView
@@ -60,38 +60,26 @@
                 android:id="@+id/rvMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+                android:layout_marginTop="8dp" />
 
             <!-- Laundry Shops Title -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Laundry Terdekat"
+                android:text="Laundry Recomendations"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:textColor="@color/primaryDark"
                 android:paddingTop="16dp" />
 
             <!-- RecyclerView for Nearby Laundry Shops -->
-            <Button
-                android:id="@+id/btnQrScan"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="Open QR Scanner"
-                android:textSize="16sp"
-                android:background="@drawable/bg_circle_radius"
-                android:textColor="@android:color/white" />
-
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/laundryListView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+                android:layout_marginTop="8dp" />
 
-            <!-- History Section (optional) -->
+            <!-- History Section -->
             <LinearLayout
                 android:id="@+id/layoutHistory"
                 android:layout_width="match_parent"
@@ -114,8 +102,19 @@
                     android:text="Periksa Riwayat Pesananmu"
                     android:textSize="16sp"
                     android:textColor="@color/white" />
-
             </LinearLayout>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
+
+    <!-- Bottom Navigation Bar -->
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigationView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        app:menu="@menu/bottom_nav_menu"
+        app:labelVisibilityMode="labeled"
+        app:itemIconTint="@color/bottom_nav_icon_color"
+        app:itemTextColor="@color/bottom_nav_text_color"
+        app:backgroundTint="@color/bottom_nav_background" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

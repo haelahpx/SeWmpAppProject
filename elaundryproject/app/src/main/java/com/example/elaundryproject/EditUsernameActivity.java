@@ -6,6 +6,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -19,6 +21,8 @@ public class EditUsernameActivity extends AppCompatActivity {
     // Firebase references
     private FirebaseAuth auth;
     private DatabaseReference databaseRef;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,5 +69,24 @@ public class EditUsernameActivity extends AppCompatActivity {
             startActivity(intent);
             finish(); // Close current activity so the user can't return to it
         });
+
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
+
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            int itemId = item.getItemId();
+            if (itemId == R.id.nav_home) {
+                startActivity(new Intent(this, MainActivity.class));
+                return true;
+            } else if (itemId == R.id.nav_nearby) {
+                startActivity(new Intent(this, qrscan.class));
+                return true;
+            } else if (itemId == R.id.nav_profile) {
+                startActivity(new Intent(this, EditUsernameActivity.class));
+                return true;
+            }
+            return false;
+        });
+
+
     }
 }
