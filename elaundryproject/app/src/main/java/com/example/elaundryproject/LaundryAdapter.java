@@ -31,11 +31,14 @@ public class LaundryAdapter extends RecyclerView.Adapter<LaundryAdapter.ViewHold
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         LaundryShop shop = laundryShops.get(position);
 
+
         holder.nameTextView.setText(shop.getName());
+        holder.distanceTextView.setText(String.format("Distance: %.2f km", shop.getDistance()));
         holder.addressTextView.setText(shop.getAddress());
         holder.locationTextView.setText(
                 String.format("Lat: %.6f, Lng: %.6f", shop.getLatitude(), shop.getLongitude())
         );
+
 
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, laundrypage.class);
@@ -54,13 +57,14 @@ public class LaundryAdapter extends RecyclerView.Adapter<LaundryAdapter.ViewHold
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView nameTextView, addressTextView, locationTextView;
+        TextView nameTextView, addressTextView, locationTextView, distanceTextView;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             nameTextView = itemView.findViewById(R.id.nameTextView);
             addressTextView = itemView.findViewById(R.id.addressTextView);
             locationTextView = itemView.findViewById(R.id.locationTextView);
+            distanceTextView = itemView.findViewById(R.id.distanceTextView);
         }
     }
 }

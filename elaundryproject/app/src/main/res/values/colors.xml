@@ -11,8 +11,6 @@
     <color name="white">#FFFFFF</color>
     <color name="primaryDark">#467CC2</color>
     <color name="blue">#2979FF</color>
-    <color name="bluePrimary">#1976D2</color> <!-- Dark Blue -->
-    <color name="blueSecondary">#64B5F6</color> <!-- Light Blue -->
-
-    <!-- Contoh warna -->
+    <color name="bluePrimary">#1976D2</color>
+    <color name="blueSecondary">#64B5F6</color>
 </resources>

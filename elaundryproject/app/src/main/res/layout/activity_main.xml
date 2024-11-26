@@ -8,6 +8,8 @@
 
     <!-- AppBar for Toolbar -->
     <com.google.android.material.appbar.AppBarLayout
+        android:layout_marginTop="10pt"
+        android:layout_marginHorizontal="10pt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
@@ -40,7 +42,8 @@
                 android:text="View Nearby Laundry Shops"
                 android:textSize="16sp"
                 android:textColor="@android:color/white"
-                android:background="@color/primary" />
+                android:background="@drawable/bg_circle_radius" />
+
 
             <!-- Categories Title -->
             <TextView
@@ -71,6 +74,16 @@
                 android:paddingTop="16dp" />
 
             <!-- RecyclerView for Nearby Laundry Shops -->
+            <Button
+                android:id="@+id/btnQrScan"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Open QR Scanner"
+                android:textSize="16sp"
+                android:background="@drawable/bg_circle_radius"
+                android:textColor="@android:color/white" />
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/laundryListView"
                 android:layout_width="match_parent"
@@ -101,6 +114,7 @@
                     android:text="Periksa Riwayat Pesananmu"
                     android:textSize="16sp"
                     android:textColor="@color/white" />
+
             </LinearLayout>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

@@ -16,7 +16,6 @@ import com.google.zxing.integration.android.IntentResult;
 public class qrscan extends AppCompatActivity {
 
     Button scan_btn;
-
     TextView textView;
 
     @Override
@@ -24,14 +23,18 @@ public class qrscan extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qrscan);
 
+        // Lock orientation to portrait
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
+        // Initialize UI elements
         scan_btn = findViewById(R.id.scanner);
         textView = findViewById(R.id.text);
 
+        // Set click listener for the scan button
         scan_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Start the QR code scanner
                 IntentIntegrator intentIntegrator = new IntentIntegrator(qrscan.this);
                 intentIntegrator.setOrientationLocked(false);
                 intentIntegrator.setPrompt("Scan a QR Code");
@@ -43,12 +46,15 @@ public class qrscan extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-
+        // Parse the result from the QR scanner
         IntentResult intentResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
         if (intentResult != null) {
             String contents = intentResult.getContents();
             if (contents != null) {
-                textView.setText(intentResult.getContents());
+                // Display the scanned QR code content
+                textView.setText(contents);
+            } else {
+                textView.setText("No QR code found.");
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data);
