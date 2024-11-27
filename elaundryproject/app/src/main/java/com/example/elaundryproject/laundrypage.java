@@ -7,7 +7,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -20,7 +19,6 @@ public class laundrypage extends AppCompatActivity {
     private TextView phoneTextView;
     private TextView priceTextView;
 
-    @SuppressLint("NonConstantResourceId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,59 +28,50 @@ public class laundrypage extends AppCompatActivity {
         addressTextView = findViewById(R.id.addressTextView);
         phoneTextView = findViewById(R.id.phoneTextView);
         priceTextView = findViewById(R.id.priceTextView);
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
 
+        // Ambil data dari Intent
         Intent intent = getIntent();
-        String shopId = intent.getStringExtra("shopId");
-        String shopName = intent.getStringExtra("shopName");
-        String shopAddress = intent.getStringExtra("shopAddress");
-        String shopPhone = intent.getStringExtra("shopPhone");
+        if (intent != null) {
+            String shopName = intent.getStringExtra("shopName");
+            String shopAddress = intent.getStringExtra("shopAddress");
+            String shopPhone = intent.getStringExtra("shopPhone");
 
-        laundryNameTextView.setText(shopName);
-        addressTextView.setText(shopAddress);
-        phoneTextView.setText(shopPhone);
+            laundryNameTextView.setText(shopName);
+            addressTextView.setText(shopAddress);
+            phoneTextView.setText(shopPhone);
 
-        fetchLaundryDetails(shopId);
-
-
-        // Handle navigation item clicks
-        bottomNavigationView.setOnItemSelectedListener(item -> {
-            int itemId = item.getItemId();
-            if (itemId == R.id.nav_home) {
-                startActivity(new Intent(this, MainActivity.class));
-                return true;
-            } else if (itemId == R.id.nav_nearby) {
-                startActivity(new Intent(this, qrscan.class));
-                return true;
-            } else if (itemId == R.id.nav_profile) {
-                startActivity(new Intent(this, EditUsernameActivity.class));
-                return true;
-            }
-            return false;
-        });
-
+            fetchLaundryDetails(shopName); // Menggunakan nama toko untuk fetch detail harga
+        }
     }
 
-    private void fetchLaundryDetails(String shopId) {
-        DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference();
+    private void fetchLaundryDetails(String shopName) {
+        DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("laundry_shops");
 
-        databaseRef.child("categories").orderByChild("shopId").equalTo(shopId).addListenerForSingleValueEvent(new ValueEventListener() {
+        databaseRef.orderByChild("name").equalTo(shopName).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
-                    for (DataSnapshot categorySnapshot : snapshot.getChildren()) {
-                        String categoryPrice = categorySnapshot.child("price").getValue(String.class);
-                        priceTextView.setText(categoryPrice != null ? "Price: " + categoryPrice + " / kg" : "Unknown Price");
-                        break;
+                    for (DataSnapshot shopSnapshot : snapshot.getChildren()) {
+                        DataSnapshot categoriesSnapshot = shopSnapshot.child("categories");
+                        StringBuilder prices = new StringBuilder("Prices:\n");
+
+                        for (DataSnapshot category : categoriesSnapshot.getChildren()) {
+                            String categoryName = category.child("category_name").getValue(String.class);
+                            Long price = category.child("price").getValue(Long.class);
+                            prices.append(categoryName).append(": ").append(price).append(" / kg\n");
+                        }
+
+                        priceTextView.setText(prices.toString());
+                        return;
                     }
                 } else {
-                    priceTextView.setText("Price not available");
+                    priceTextView.setText("Price data not available");
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(laundrypage.this, "Failed to fetch price: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(laundrypage.this, "Failed to fetch data: " + error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }

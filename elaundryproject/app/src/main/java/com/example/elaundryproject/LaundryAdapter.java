@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import java.util.ArrayList;
 
 public class LaundryAdapter extends RecyclerView.Adapter<LaundryAdapter.ViewHolder> {
@@ -31,7 +30,6 @@ public class LaundryAdapter extends RecyclerView.Adapter<LaundryAdapter.ViewHold
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         LaundryShop shop = laundryShops.get(position);
 
-
         holder.nameTextView.setText(shop.getName());
         holder.distanceTextView.setText(String.format("Distance: %.2f km", shop.getDistance()));
         holder.addressTextView.setText(shop.getAddress());
@@ -39,16 +37,15 @@ public class LaundryAdapter extends RecyclerView.Adapter<LaundryAdapter.ViewHold
                 String.format("Lat: %.6f, Lng: %.6f", shop.getLatitude(), shop.getLongitude())
         );
 
-
+        // Klik item untuk membuka laundrypage
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, laundrypage.class);
-            intent.putExtra("shopName", shop.name);
-            intent.putExtra("shopAddress", shop.address);
-            intent.putExtra("shopPhone", shop.phone);
+            intent.putExtra("shopName", shop.getName());
+            intent.putExtra("shopAddress", shop.getAddress());
+            intent.putExtra("shopPhone", shop.getPhone());
             intent.putExtra("shopDistance", shop.getDistance());
             context.startActivity(intent);
         });
-
     }
 
     @Override
