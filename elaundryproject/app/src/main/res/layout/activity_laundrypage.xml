@@ -59,6 +59,15 @@
             android:textSize="16sp"
             android:layout_marginBottom="16dp" />
 
+        <Spinner
+            android:id="@+id/categorySpinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:prompt="@string/select_category" />
+
+
+
+
         <!-- GO Laundry Button -->
         <Button
             android:id="@+id/goLaundryButton"

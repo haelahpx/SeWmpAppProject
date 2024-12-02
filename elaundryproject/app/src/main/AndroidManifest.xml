@@ -20,6 +20,9 @@
         android:theme="@style/Theme.Elaundryproject"
         tools:targetApi="31">
         <activity
+            android:name=".checkout"
+            android:exported="false" />
+        <activity
             android:name=".EditUsernameActivity"
             android:exported="false" />
         <activity
