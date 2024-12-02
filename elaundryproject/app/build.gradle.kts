@@ -53,6 +53,10 @@ dependencies {
     implementation("com.google.code.gson:gson:2.10.1")
     implementation ("com.journeyapps:zxing-android-embedded:4.3.0")
 
+
+    implementation ("com.github.bumptech.glide:glide:4.15.1")  // Make sure to use the latest version
+    annotationProcessor ("com.github.bumptech.glide:compiler:4.15.1")
+
     // Testing dependencies
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)

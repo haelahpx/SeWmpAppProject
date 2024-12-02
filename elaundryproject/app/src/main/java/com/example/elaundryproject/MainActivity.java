@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,7 +35,8 @@ public class MainActivity extends AppCompatActivity {
     // Views
     private RecyclerView rvMenu, laundryListView;
     private TextView userNameTextView;
-    private Button btnLaundryShops, btnQrScan;
+    private Button btnLaundryShops;
+    private LinearLayout layoutHistory;
 
     // Adapters
     private MenuAdapter menuAdapter;
@@ -61,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
         laundryListView = findViewById(R.id.laundryListView);
         userNameTextView = findViewById(R.id.userNameTextView);
         btnLaundryShops = findViewById(R.id.btnLaundryShops);
+        layoutHistory = findViewById(R.id.layoutHistory); // Add this line to bind layoutHistory
 
         // Profile Icon Listener
         ImageView profileIcon = findViewById(R.id.profileIcon);
@@ -93,6 +96,11 @@ public class MainActivity extends AppCompatActivity {
             startActivity(new Intent(MainActivity.this, NearbyLaundry.class));
         });
 
+        // Add click listener for "Periksa Riwayat Pesananmu"
+        layoutHistory.setOnClickListener(view -> {
+            Intent intent = new Intent(MainActivity.this, OrderHistoryActivity.class);
+            startActivity(intent);
+        });
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setOnItemSelectedListener(item -> {

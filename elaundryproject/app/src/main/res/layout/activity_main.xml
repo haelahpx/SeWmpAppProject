@@ -4,6 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     android:background="@color/white">
 
     <!-- AppBar for Toolbar -->
@@ -26,7 +27,9 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:paddingBottom="70dp"
+        android:clipToPadding="false">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -86,6 +89,7 @@
                 android:layout_height="60dp"
                 android:orientation="horizontal"
                 android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
                 android:background="@drawable/bg_circle_radius"
                 android:gravity="center_vertical">
 
@@ -110,7 +114,7 @@
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="56dp"
         android:layout_gravity="bottom"
         app:menu="@menu/bottom_nav_menu"
         app:labelVisibilityMode="labeled"

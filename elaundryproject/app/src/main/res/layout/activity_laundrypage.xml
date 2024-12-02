@@ -61,12 +61,10 @@
 
         <Spinner
             android:id="@+id/categorySpinner"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
             android:prompt="@string/select_category" />
-
-
-
 
         <!-- GO Laundry Button -->
         <Button
