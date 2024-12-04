@@ -6,6 +6,8 @@ public class Order {
     private String orderId;
     private String orderStatus;
     private String userId;
+    private Long price; // Added price field
+    private String shopId; // Added shopId field
 
     public Order() { }
 
@@ -23,4 +25,10 @@ public class Order {
 
     public String getUserId() { return userId; }
     public void setUserId(String userId) { this.userId = userId; }
+
+    public Long getPrice() { return price; }
+    public void setPrice(Long price) { this.price = price; }
+
+    public String getShopId() { return shopId; }
+    public void setShopId(String shopId) { this.shopId = shopId; }
 }
