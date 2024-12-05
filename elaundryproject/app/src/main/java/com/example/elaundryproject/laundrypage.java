@@ -35,12 +35,15 @@ public class laundrypage extends AppCompatActivity {
     private TextView priceTextView;
     private Button goLaundryButton;
     private Spinner categorySpinner;
+
     private ArrayList<String> categoryList = new ArrayList<>();
     private ArrayAdapter<String> spinnerAdapter;
     private HashMap<String, Long> categoryPriceMap = new HashMap<>();
 
     private FirebaseAuth mAuth;
     private DatabaseReference orderRef;
+
+    private String currentShopId; // Menyimpan shop_id
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,33 +74,36 @@ public class laundrypage extends AppCompatActivity {
             addressTextView.setText(shopAddress);
             phoneTextView.setText(shopPhone);
 
-            fetchLaundryDetails(shopName);
+            fetchLaundryDetailsByShopName(shopName);
         }
 
         setupSpinnerListener();
 
         goLaundryButton.setOnClickListener(v -> {
             String userId = mAuth.getCurrentUser().getUid();
-            String shopName = laundryNameTextView.getText().toString();
             String selectedCategory = categorySpinner.getSelectedItem().toString();
             String orderId = UUID.randomUUID().toString();
             String ordermasterid = UUID.randomUUID().toString();
             String orderDate = getCurrentDate();
             String orderStatus = "On Progress";
 
-            placeOrder(orderId, orderDate, userId, orderStatus, shopName, selectedCategory, ordermasterid);
+            placeOrder(orderId, orderDate, userId, orderStatus, currentShopId, selectedCategory, ordermasterid);
         });
     }
 
-    private void fetchLaundryDetails(String shopName) {
+    private void fetchLaundryDetailsByShopName(String shopName) {
         DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("laundry_shops");
 
+        // Cari toko berdasarkan shopName, lalu ambil shop_id
         databaseRef.orderByChild("name").equalTo(shopName).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
                     for (DataSnapshot shopSnapshot : snapshot.getChildren()) {
+                        currentShopId = shopSnapshot.child("shop_id").getValue(String.class); // Ambil shop_id
+
                         DataSnapshot categoriesSnapshot = shopSnapshot.child("categories");
+
                         categoryList.clear();
                         categoryPriceMap.clear();
 
@@ -140,8 +146,7 @@ public class laundrypage extends AppCompatActivity {
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
+            public void onNothingSelected(AdapterView<?> parent) {}
         });
     }
 
@@ -151,25 +156,17 @@ public class laundrypage extends AppCompatActivity {
         return sdf.format(new Date());
     }
 
-    private void placeOrder(String orderId, String orderDate, String userId, String orderStatus, String shopName, String categoryName, String ordermasterid) {
+    private void placeOrder(String orderId, String orderDate, String userId, String orderStatus, String shopId, String categoryName, String ordermasterid) {
         Long selectedPrice = categoryPriceMap.get(categoryName);
-        String shopId = shopName;
 
-        Order order = new Order();
-        order.setOrderId(orderId);
-        order.setOrderDate(orderDate);
-        order.setUserId(userId);
-        order.setOrderStatus(orderStatus);
-        order.setCategoryName(categoryName);
-        order.setPrice(selectedPrice);
-        order.setShopId(shopId);
+        Order order = new Order(orderId, orderDate, userId, orderStatus, categoryName, selectedPrice, shopId);
 
         orderRef.child(ordermasterid).setValue(order)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         Intent checkoutIntent = new Intent(laundrypage.this, checkout.class);
                         checkoutIntent.putExtra("userId", userId);
-                        checkoutIntent.putExtra("shopName", shopName);
+                        checkoutIntent.putExtra("shopId", shopId);
                         checkoutIntent.putExtra("categoryName", categoryName);
                         checkoutIntent.putExtra("price", selectedPrice);
                         checkoutIntent.putExtra("ordermasterid", ordermasterid);

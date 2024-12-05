@@ -1,6 +1,5 @@
 package com.example.elaundryproject;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -52,6 +51,9 @@ public class checkout extends AppCompatActivity {
         Log.d("Checkout", "Received price: " + price);
         Toast.makeText(this, "Price: " + price, Toast.LENGTH_SHORT).show();
 
+        // Log the ordermasterid to ensure it is valid
+        Log.d("Checkout", "Order Master ID: " + ordermasterid);
+
         // Set up the confirm order button click listener
         btnConfirm.setOnClickListener(v -> confirmOrder(ordermasterid));
     }
@@ -73,12 +75,6 @@ public class checkout extends AppCompatActivity {
         String paymentMethod;
         if (rbQris.isChecked()) {
             paymentMethod = "QRIS";
-            // Intent to QR code activity
-            Intent qrCodeIntent = new Intent(this, qrcode.class);
-            qrCodeIntent.putExtra("ordermasterid", ordermasterid); // Pass the ordermasterid
-            qrCodeIntent.putExtra("price", price); // Pass the price for QR code generation
-            startActivity(qrCodeIntent); // Start the QR code activity
-            return; // Do not proceed with saving the order as the QR code page is being opened
         } else if (rbCod.isChecked()) {
             paymentMethod = "Cash on delivery";
         } else {
