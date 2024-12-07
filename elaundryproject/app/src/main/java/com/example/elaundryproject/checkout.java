@@ -1,8 +1,8 @@
 package com.example.elaundryproject;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -17,8 +17,7 @@ import com.google.firebase.database.FirebaseDatabase;
 public class checkout extends AppCompatActivity {
 
     private EditText etName, etNumber, etAddress;
-    private RadioGroup radioGroup;
-    private RadioButton rbDeliver, rbPickup, rbQris, rbCod;
+    private RadioGroup radioGroup, radioGroupPayment;
     private Button btnConfirm;
 
     private DatabaseReference orderDetailsRef;
@@ -34,10 +33,7 @@ public class checkout extends AppCompatActivity {
         etNumber = findViewById(R.id.et_number);
         etAddress = findViewById(R.id.et_address);
         radioGroup = findViewById(R.id.radio_group);
-        rbDeliver = findViewById(R.id.rb_deliver);
-        rbPickup = findViewById(R.id.rb_pickup);
-        rbQris = findViewById(R.id.rb_qris);
-        rbCod = findViewById(R.id.rb_cod);
+        radioGroupPayment = findViewById(R.id.radio_group_payment);
         btnConfirm = findViewById(R.id.btn_confirm);
 
         // Initialize Firebase database reference
@@ -63,22 +59,30 @@ public class checkout extends AppCompatActivity {
         String number = etNumber.getText().toString().trim();
         String address = etAddress.getText().toString().trim();
 
+        // Get selected delivery method
         String deliveryMethod;
-        if (rbDeliver.isChecked()) {
+        int selectedDeliveryId = radioGroup.getCheckedRadioButtonId();
+
+        if (selectedDeliveryId == R.id.rb_deliver) {
             deliveryMethod = "Deliver laundry";
-        } else if (rbPickup.isChecked()) {
+        } else if (selectedDeliveryId == R.id.rb_pickup) {
             deliveryMethod = "Pick up laundry";
         } else {
-            deliveryMethod = "Not specified"; // Fallback if no delivery method is selected
+            Toast.makeText(this, "Please select a delivery method", Toast.LENGTH_SHORT).show();
+            return; // Stop the method if no delivery method is selected
         }
 
+        // Get selected payment method
         String paymentMethod;
-        if (rbQris.isChecked()) {
+        int selectedPaymentId = radioGroupPayment.getCheckedRadioButtonId();
+
+        if (selectedPaymentId == R.id.rb_qris) {
             paymentMethod = "QRIS";
-        } else if (rbCod.isChecked()) {
+        } else if (selectedPaymentId == R.id.rb_cod) {
             paymentMethod = "Cash on delivery";
         } else {
-            paymentMethod = "Not specified"; // Fallback if no payment method is selected
+            Toast.makeText(this, "Please select a payment method", Toast.LENGTH_SHORT).show();
+            return; // Stop the method if no payment method is selected
         }
 
         if (name.isEmpty() || number.isEmpty() || address.isEmpty()) {
@@ -87,7 +91,7 @@ public class checkout extends AppCompatActivity {
         }
 
         // Create the orderDetails object
-        String orderDetailsId = orderDetailsRef.push().getKey();  // Generate a unique ID for the order details
+        String orderDetailsId = orderDetailsRef.push().getKey(); // Generate a unique ID for the order details
         OrderDetails orderDetails = new OrderDetails(name, number, address, deliveryMethod, paymentMethod, price);
 
         // Insert into the orderdetails table under the corresponding ordermasterid
@@ -96,7 +100,13 @@ public class checkout extends AppCompatActivity {
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
                             Toast.makeText(checkout.this, "Order confirmed", Toast.LENGTH_SHORT).show();
-                            finish(); // Finish the activity and go back
+
+                            // Navigate to QRCode activity with price and ordermasterid
+                            Intent intent = new Intent(checkout.this, qrcode.class);
+                            intent.putExtra("ordermasterid", ordermasterid);
+                            intent.putExtra("price", price);
+                            startActivity(intent);
+                            finish(); // Close the current activity
                         } else {
                             Log.e("Checkout", "Failed to confirm order", task.getException());
                             Toast.makeText(checkout.this, "Failed to confirm order: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
