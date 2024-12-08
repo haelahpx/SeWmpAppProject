@@ -24,52 +24,96 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="16dp" />
 
-        <!-- Placeholder for an image or map -->
-        <View
+        <!-- Image below the laundry name -->
+        <ImageView
+            android:id="@+id/laundryImageView"
             android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="16dp"
-            android:background="#CCCCCC" />
+            android:layout_height="350dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_laundry_shop"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Address Heading -->
+        <TextView
+            android:id="@+id/addressHeading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Address"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="4dp" />
 
         <!-- Address -->
         <TextView
             android:id="@+id/addressTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Address: Jalan Setiamurni No. 10"
+            android:text="Jalan Setiamurni No. 10"
             android:textSize="16sp"
-            android:layout_marginBottom="8dp" />
+            android:layout_marginBottom="16dp" />
+
+        <!-- Phone Heading -->
+        <TextView
+            android:id="@+id/phoneHeading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Phone"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="4dp" />
 
         <!-- Phone Number -->
         <TextView
             android:id="@+id/phoneTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Phone: +62 123 4567 890"
+            android:text="+62 123 4567 890"
             android:textSize="16sp"
             android:layout_marginBottom="16dp" />
+
+        <!-- Price Heading -->
+        <TextView
+            android:id="@+id/priceHeading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Price"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="4dp" />
 
         <!-- Price -->
         <TextView
             android:id="@+id/priceTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Price: Rp10,000 / kg"
+            android:text="Rp10,000 / kg"
             android:textSize="16sp"
             android:layout_marginBottom="16dp" />
 
+        <!-- Category Heading -->
+        <TextView
+            android:id="@+id/categoryHeading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Category"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="4dp" />
+
+        <!-- Spinner -->
         <Spinner
             android:id="@+id/categorySpinner"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:layout_marginBottom="16dp"
-            android:prompt="@string/select_category" />
+            android:background="@drawable/spinner_background"
+            android:padding="8dp"
+            android:popupBackground="#FFFFFF"/>
 
         <!-- GO Laundry Button -->
         <Button
             android:id="@+id/goLaundryButton"
-            android:layout_width="wrap_content"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="16dp"

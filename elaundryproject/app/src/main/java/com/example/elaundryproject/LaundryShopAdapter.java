@@ -65,7 +65,6 @@ public class LaundryShopAdapter extends RecyclerView.Adapter<LaundryShopAdapter.
             shopName = itemView.findViewById(R.id.shopName);
             shopAddress = itemView.findViewById(R.id.shopAddress);
             shopPhone = itemView.findViewById(R.id.shopPhone);
-            shopDistance = itemView.findViewById(R.id.shopDistance);
         }
     }
 }

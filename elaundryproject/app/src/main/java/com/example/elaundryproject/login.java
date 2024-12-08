@@ -5,7 +5,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.text.TextUtils;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
+import android.text.style.ForegroundColorSpan;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,11 +21,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.method.LinkMovementMethod;
-import android.text.style.ClickableSpan;
 
 public class login extends AppCompatActivity {
     private Button login;
@@ -55,15 +55,27 @@ public class login extends AppCompatActivity {
             }
         });
 
+        // Membuat teks "Don't have an account? Register here"
         SpannableString spannableString = new SpannableString("Don't have an account? Register here");
+
+        // Klik pada teks "Register"
         ClickableSpan clickableSpan = new ClickableSpan() {
             @Override
             public void onClick(@NonNull View widget) {
+                // Arahkan ke halaman register
                 Intent intent = new Intent(login.this, register.class);
                 startActivity(intent);
             }
         };
-        spannableString.setSpan(clickableSpan, 23, 30, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        // Warna teks "Register"
+        ForegroundColorSpan colorSpan = new ForegroundColorSpan(getResources().getColor(R.color.black)); // Ganti 'blue' dengan warna yang Anda gunakan
+
+        // Pasang span untuk teks "Register"
+        spannableString.setSpan(clickableSpan, 23, 31, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);  // Memperbaiki rentang
+        spannableString.setSpan(colorSpan, 23, 31, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);  // Memperbaiki rentang
+
+        // Pasang teks ke TextView
         registerLink.setText(spannableString);
         registerLink.setMovementMethod(LinkMovementMethod.getInstance());
     }

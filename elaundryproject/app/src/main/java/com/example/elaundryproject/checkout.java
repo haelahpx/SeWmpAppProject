@@ -17,7 +17,8 @@ import com.google.firebase.database.FirebaseDatabase;
 public class checkout extends AppCompatActivity {
 
     private EditText etName, etNumber, etAddress;
-    private RadioGroup radioGroup, radioGroupPayment;
+    private RadioGroup radioGroup;
+    private RadioButton rbDeliver, rbPickup, rbQris, rbCod;
     private Button btnConfirm;
 
     private DatabaseReference orderDetailsRef;
@@ -33,7 +34,10 @@ public class checkout extends AppCompatActivity {
         etNumber = findViewById(R.id.et_number);
         etAddress = findViewById(R.id.et_address);
         radioGroup = findViewById(R.id.radio_group);
-        radioGroupPayment = findViewById(R.id.radio_group_payment);
+        rbDeliver = findViewById(R.id.rb_deliver);
+        rbPickup = findViewById(R.id.rb_pickup);
+        rbQris = findViewById(R.id.rb_qris);
+        rbCod = findViewById(R.id.rb_cod);
         btnConfirm = findViewById(R.id.btn_confirm);
 
         // Initialize Firebase database reference
@@ -59,30 +63,22 @@ public class checkout extends AppCompatActivity {
         String number = etNumber.getText().toString().trim();
         String address = etAddress.getText().toString().trim();
 
-        // Get selected delivery method
         String deliveryMethod;
-        int selectedDeliveryId = radioGroup.getCheckedRadioButtonId();
-
-        if (selectedDeliveryId == R.id.rb_deliver) {
+        if (rbDeliver.isChecked()) {
             deliveryMethod = "Deliver laundry";
-        } else if (selectedDeliveryId == R.id.rb_pickup) {
+        } else if (rbPickup.isChecked()) {
             deliveryMethod = "Pick up laundry";
         } else {
-            Toast.makeText(this, "Please select a delivery method", Toast.LENGTH_SHORT).show();
-            return; // Stop the method if no delivery method is selected
+            deliveryMethod = "Not specified"; // Fallback if no delivery method is selected
         }
 
-        // Get selected payment method
         String paymentMethod;
-        int selectedPaymentId = radioGroupPayment.getCheckedRadioButtonId();
-
-        if (selectedPaymentId == R.id.rb_qris) {
+        if (rbQris.isChecked()) {
             paymentMethod = "QRIS";
-        } else if (selectedPaymentId == R.id.rb_cod) {
+        } else if (rbCod.isChecked()) {
             paymentMethod = "Cash on delivery";
         } else {
-            Toast.makeText(this, "Please select a payment method", Toast.LENGTH_SHORT).show();
-            return; // Stop the method if no payment method is selected
+            paymentMethod = "Not specified"; // Fallback if no payment method is selected
         }
 
         if (name.isEmpty() || number.isEmpty() || address.isEmpty()) {
@@ -99,13 +95,16 @@ public class checkout extends AppCompatActivity {
             orderDetailsRef.child(ordermasterid).child(orderDetailsId).setValue(orderDetails)
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
-                            Toast.makeText(checkout.this, "Order confirmed", Toast.LENGTH_SHORT).show();
-
-                            // Navigate to QRCode activity with price and ordermasterid
-                            Intent intent = new Intent(checkout.this, qrcode.class);
-                            intent.putExtra("ordermasterid", ordermasterid);
-                            intent.putExtra("price", price);
-                            startActivity(intent);
+                            // Check if payment method is cash on delivery
+                            if (paymentMethod.equals("Cash on delivery")) {
+                                Toast.makeText(checkout.this, "Order success", Toast.LENGTH_SHORT).show();
+                            } else {
+                                // Navigate to QRCode activity with price and ordermasterid
+                                Intent intent = new Intent(checkout.this, qrcode.class);
+                                intent.putExtra("ordermasterid", ordermasterid);
+                                intent.putExtra("price", price);
+                                startActivity(intent);
+                            }
                             finish(); // Close the current activity
                         } else {
                             Log.e("Checkout", "Failed to confirm order", task.getException());

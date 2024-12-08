@@ -1,11 +1,17 @@
 package com.example.elaundryproject;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.text.TextUtils;
-import android.util.Log;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
+import android.text.style.ForegroundColorSpan;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,7 +25,6 @@ public class register extends AppCompatActivity {
 
     private EditText usernameEditText, emailEditText, phoneEditText, passwordEditText;
     private Button registerButton;
-
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
 
@@ -28,9 +33,7 @@ public class register extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-
         mAuth = FirebaseAuth.getInstance();
-
         mDatabase = FirebaseDatabase.getInstance().getReference("users");
 
         usernameEditText = findViewById(R.id.username);
@@ -38,6 +41,33 @@ public class register extends AppCompatActivity {
         phoneEditText = findViewById(R.id.phone);
         passwordEditText = findViewById(R.id.password);
         registerButton = findViewById(R.id.registerButton);
+
+        // Menangani klik pada link login
+        TextView loginLink = findViewById(R.id.loginLink);
+
+        // Membuat teks "Already have an account? Login here"
+        SpannableString spannableString = new SpannableString("Already have an account? Login here");
+
+        // Klik pada teks "Login"
+        ClickableSpan clickableSpan = new ClickableSpan() {
+            @Override
+            public void onClick(View widget) {
+                // Arahkan ke halaman login
+                Intent intent = new Intent(register.this, login.class);
+                startActivity(intent);
+            }
+        };
+
+        // Warna teks "Login"
+        ForegroundColorSpan colorSpan = new ForegroundColorSpan(getResources().getColor(R.color.black)); // Ganti dengan warna hitam
+
+        // Pasang span untuk teks "Login"
+        spannableString.setSpan(clickableSpan, 25, 30, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);  // Rentang teks "Login"
+        spannableString.setSpan(colorSpan, 25, 30, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);  // Rentang teks "Login"
+
+        // Pasang teks ke TextView
+        loginLink.setText(spannableString);
+        loginLink.setMovementMethod(LinkMovementMethod.getInstance());
 
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,8 +94,6 @@ public class register extends AppCompatActivity {
                         FirebaseUser firebaseUser = mAuth.getCurrentUser();
                         if (firebaseUser != null) {
 
-                            Log.d("FirebaseAuth", "Authenticated user ID: " + firebaseUser.getUid());
-
                             String createdAt = String.valueOf(System.currentTimeMillis());
 
                             User newUser = new User(email, name, phone, "customer", firebaseUser.getUid(), createdAt);
@@ -77,13 +105,11 @@ public class register extends AppCompatActivity {
                                             clearFields();
                                         } else {
                                             Toast.makeText(register.this, "Error saving user data", Toast.LENGTH_SHORT).show();
-                                            Log.e("Firebase", "Error saving user data", task1.getException());
                                         }
                                     });
                         }
                     } else {
                         Toast.makeText(register.this, "Authentication failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                        Log.e("FirebaseAuth", "Error: " + task.getException().getMessage());
                     }
                 });
     }
@@ -95,7 +121,6 @@ public class register extends AppCompatActivity {
         passwordEditText.setText("");
     }
 
-
     public static class User {
         public String email;
         public String name;
@@ -104,10 +129,8 @@ public class register extends AppCompatActivity {
         public String user_id;
         public String created_at;
 
-
         public User() {
         }
-
 
         public User(String email, String name, String phone, String role, String user_id, String created_at) {
             this.email = email;
