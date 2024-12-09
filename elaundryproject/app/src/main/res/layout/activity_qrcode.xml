@@ -21,10 +21,11 @@
         android:layout_marginBottom="20dp"/>
 
     <Button
-        android:id="@+id/generateQrCodeButton"
+        android:id="@+id/btn_finish_payment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text=" finish payment"
-        android:onClick="generateQrCode" />
+        android:text="Finish Payment"
+        android:onClick="finishPayment" />
+
 
 </LinearLayout>

@@ -6,7 +6,6 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,10 +13,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+import java.util.UUID;
+
 public class checkout extends AppCompatActivity {
 
     private EditText etName, etNumber, etAddress;
-    private RadioGroup radioGroup;
     private RadioButton rbDeliver, rbPickup, rbQris, rbCod;
     private Button btnConfirm;
 
@@ -33,7 +36,6 @@ public class checkout extends AppCompatActivity {
         etName = findViewById(R.id.et_name);
         etNumber = findViewById(R.id.et_number);
         etAddress = findViewById(R.id.et_address);
-        radioGroup = findViewById(R.id.radio_group);
         rbDeliver = findViewById(R.id.rb_deliver);
         rbPickup = findViewById(R.id.rb_pickup);
         rbQris = findViewById(R.id.rb_qris);
@@ -51,69 +53,73 @@ public class checkout extends AppCompatActivity {
         Log.d("Checkout", "Received price: " + price);
         Toast.makeText(this, "Price: " + price, Toast.LENGTH_SHORT).show();
 
-        // Log the ordermasterid to ensure it is valid
-        Log.d("Checkout", "Order Master ID: " + ordermasterid);
-
         // Set up the confirm order button click listener
-        btnConfirm.setOnClickListener(v -> confirmOrder(ordermasterid));
-    }
+        btnConfirm.setOnClickListener(v -> {
+            String name = etName.getText().toString().trim();
+            String number = etNumber.getText().toString().trim();
+            String address = etAddress.getText().toString().trim();
 
-    private void confirmOrder(String ordermasterid) {
-        String name = etName.getText().toString().trim();
-        String number = etNumber.getText().toString().trim();
-        String address = etAddress.getText().toString().trim();
+            // Determine delivery method
+            String deliveryMethod = rbDeliver.isChecked() ? "Deliver laundry" : rbPickup.isChecked() ? "Pick up laundry" : "Not specified";
 
-        String deliveryMethod;
-        if (rbDeliver.isChecked()) {
-            deliveryMethod = "Deliver laundry";
-        } else if (rbPickup.isChecked()) {
-            deliveryMethod = "Pick up laundry";
-        } else {
-            deliveryMethod = "Not specified"; // Fallback if no delivery method is selected
-        }
+            // Determine payment method and status
+            String paymentMethod = rbQris.isChecked() ? "QRIS" : rbCod.isChecked() ? "Cash on delivery" : "Not specified";
+            String paymentStatus = paymentMethod.equals("QRIS") ? "Pending" : "COD - Pending";
 
-        String paymentMethod;
-        if (rbQris.isChecked()) {
-            paymentMethod = "QRIS";
-        } else if (rbCod.isChecked()) {
-            paymentMethod = "Cash on delivery";
-        } else {
-            paymentMethod = "Not specified"; // Fallback if no payment method is selected
-        }
+            if (name.isEmpty() || number.isEmpty() || address.isEmpty() || paymentMethod.equals("Not specified")) {
+                Toast.makeText(checkout.this, "Please fill in all fields and select payment method", Toast.LENGTH_SHORT).show();
+                return;
+            }
 
-        if (name.isEmpty() || number.isEmpty() || address.isEmpty()) {
-            Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
-            return;
-        }
+            // Create and save order details
+            String orderDetailsId = UUID.randomUUID().toString();  // Generate unique ID for order details
+            OrderDetails orderDetails = new OrderDetails(name, number, address, deliveryMethod, paymentMethod, price);
 
-        // Create the orderDetails object
-        String orderDetailsId = orderDetailsRef.push().getKey(); // Generate a unique ID for the order details
-        OrderDetails orderDetails = new OrderDetails(name, number, address, deliveryMethod, paymentMethod, price);
-
-        // Insert into the orderdetails table under the corresponding ordermasterid
-        if (orderDetailsId != null) {
+            // Save order details to Firebase
             orderDetailsRef.child(ordermasterid).child(orderDetailsId).setValue(orderDetails)
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
-                            // Check if payment method is cash on delivery
+                            // Save payment data if "Cash on Delivery" is selected
                             if (paymentMethod.equals("Cash on delivery")) {
-                                Toast.makeText(checkout.this, "Order success", Toast.LENGTH_SHORT).show();
+                                String paymentId = UUID.randomUUID().toString();  // Generate payment ID
+                                savePaymentData(ordermasterid, paymentMethod, paymentStatus, paymentId);  // Pass paymentId
+                                Toast.makeText(checkout.this, "Order confirmed! Payment saved successfully.", Toast.LENGTH_SHORT).show();
                             } else {
-                                // Navigate to QRCode activity with price and ordermasterid
+                                // If QRIS is selected, navigate to QR Code activity
+                                String paymentId = UUID.randomUUID().toString();  // Generate payment ID for QRIS
                                 Intent intent = new Intent(checkout.this, qrcode.class);
                                 intent.putExtra("ordermasterid", ordermasterid);
                                 intent.putExtra("price", price);
+                                intent.putExtra("paymentMethod", paymentMethod);
+                                intent.putExtra("paymentStatus", paymentStatus);
+                                intent.putExtra("paymentId", paymentId);  // Add paymentId to the intent
                                 startActivity(intent);
                             }
-                            finish(); // Close the current activity
+                            finish(); // Close the activity after saving
                         } else {
-                            Log.e("Checkout", "Failed to confirm order", task.getException());
-                            Toast.makeText(checkout.this, "Failed to confirm order: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            Log.e("Checkout", "Failed to save order details", task.getException());
+                            Toast.makeText(checkout.this, "Failed to save order details: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     });
-        } else {
-            Toast.makeText(this, "Error generating order details ID", Toast.LENGTH_SHORT).show();
-        }
+        });
+    }
+
+    private void savePaymentData(String ordermasterid, String paymentMethod, String paymentStatus, String paymentId) {
+        // Get current timestamp
+        String paymentDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
+
+        // Create Payment object
+        Payment payment = new Payment(paymentId, ordermasterid, paymentMethod, paymentStatus, paymentDate);
+
+        // Save to Firebase
+        DatabaseReference paymentRef = FirebaseDatabase.getInstance().getReference("payment");
+        paymentRef.child(paymentId).setValue(payment)
+                .addOnSuccessListener(aVoid -> {
+                    Toast.makeText(checkout.this, "Payment saved successfully.", Toast.LENGTH_SHORT).show();
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(checkout.this, "Failed to save payment: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                });
     }
 
     // OrderDetails model class
@@ -132,6 +138,31 @@ public class checkout extends AppCompatActivity {
             this.deliveryMethod = deliveryMethod;
             this.paymentMethod = paymentMethod;
             this.price = price;
+        }
+
+        // Empty constructor required for Firebase
+        public OrderDetails() {
+        }
+    }
+
+    // Payment model class
+    public static class Payment {
+        public String paymentId;
+        public String orderMasterId;
+        public String paymentMethod;
+        public String paymentStatus;
+        public String paymentDate;
+
+        public Payment(String paymentId, String orderMasterId, String paymentMethod, String paymentStatus, String paymentDate) {
+            this.paymentId = paymentId;
+            this.orderMasterId = orderMasterId;
+            this.paymentMethod = paymentMethod;
+            this.paymentStatus = paymentStatus;
+            this.paymentDate = paymentDate;
+        }
+
+        // Empty constructor required for Firebase
+        public Payment() {
         }
     }
 }
