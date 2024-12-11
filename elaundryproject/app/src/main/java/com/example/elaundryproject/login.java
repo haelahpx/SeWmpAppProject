@@ -27,6 +27,7 @@ public class login extends AppCompatActivity {
     private EditText userName, passWord;
     private FirebaseAuth auth;
     private TextView registerLink;
+    private TextView forgotPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,10 +38,10 @@ public class login extends AppCompatActivity {
         passWord = findViewById(R.id.password);
         login = findViewById(R.id.button);
         registerLink = findViewById(R.id.registerLink);
+        forgotPassword = findViewById(R.id.forgotPassword);
 
         auth = FirebaseAuth.getInstance();
 
-        // Handle login button click
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -55,30 +56,49 @@ public class login extends AppCompatActivity {
             }
         });
 
-        // Membuat teks "Don't have an account? Register here"
         SpannableString spannableString = new SpannableString("Don't have an account? Register here");
 
-        // Klik pada teks "Register"
         ClickableSpan clickableSpan = new ClickableSpan() {
             @Override
             public void onClick(@NonNull View widget) {
-                // Arahkan ke halaman register
                 Intent intent = new Intent(login.this, register.class);
                 startActivity(intent);
             }
         };
 
-        // Warna teks "Register"
         ForegroundColorSpan colorSpan = new ForegroundColorSpan(getResources().getColor(R.color.black)); // Ganti 'blue' dengan warna yang Anda gunakan
 
-        // Pasang span untuk teks "Register"
         spannableString.setSpan(clickableSpan, 23, 31, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);  // Memperbaiki rentang
         spannableString.setSpan(colorSpan, 23, 31, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);  // Memperbaiki rentang
 
-        // Pasang teks ke TextView
+
         registerLink.setText(spannableString);
         registerLink.setMovementMethod(LinkMovementMethod.getInstance());
+
+        forgotPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String email = userName.getText().toString().trim();
+
+                if (TextUtils.isEmpty(email)) {
+                    Toast.makeText(login.this, "Please enter your registered email", Toast.LENGTH_SHORT).show();
+                } else {
+                    auth.sendPasswordResetEmail(email)
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()) {
+                                        Toast.makeText(login.this, "Password recovery email sent", Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        Toast.makeText(login.this, "Failed to send email. Try again!", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            });
+                }
+            }
+        });
     }
+
 
     private void loginUser(String username, String password) {
         auth.signInWithEmailAndPassword(username, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {

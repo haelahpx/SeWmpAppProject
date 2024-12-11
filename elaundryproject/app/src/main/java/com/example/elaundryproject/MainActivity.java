@@ -32,23 +32,19 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    // Views
     private RecyclerView rvMenu, laundryListView;
     private TextView userNameTextView;
     private Button btnLaundryShops;
     private LinearLayout layoutHistory;
 
-    // Adapters
     private MenuAdapter menuAdapter;
     private List<ModelMenu> modelMenuList = new ArrayList<>();
     private ArrayList<LaundryShop> laundryShops = new ArrayList<>();
 
-    // Firebase
     private FirebaseAuth auth;
     private DatabaseReference databaseReference;
     private FirebaseUser currentUser;
 
-    // Constants
     private static final String TAG = "MainActivity";
     private static final String USERS_KEY = "users";
     private static final String NAME_KEY = "name";
@@ -58,45 +54,37 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Initialize Views
         rvMenu = findViewById(R.id.rvMenu);
         laundryListView = findViewById(R.id.laundryListView);
         userNameTextView = findViewById(R.id.userNameTextView);
         btnLaundryShops = findViewById(R.id.btnLaundryShops);
-        layoutHistory = findViewById(R.id.layoutHistory); // Add this line to bind layoutHistory
+        layoutHistory = findViewById(R.id.layoutHistory);
 
-        // Profile Icon Listener
         ImageView profileIcon = findViewById(R.id.profileIcon);
         profileIcon.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, EditUsernameActivity.class);
             startActivity(intent);
         });
 
-        // Set Layout Managers
-        rvMenu.setLayoutManager(new GridLayoutManager(this, 2)); // Grid for Menu
-        laundryListView.setLayoutManager(new LinearLayoutManager(this)); // List for Laundry Shops
+        rvMenu.setLayoutManager(new GridLayoutManager(this, 2));
+        laundryListView.setLayoutManager(new LinearLayoutManager(this));
 
-        // Initialize Firebase
         auth = FirebaseAuth.getInstance();
         currentUser = auth.getCurrentUser();
 
-        // Check if user is logged in
         if (currentUser != null) {
             loadUserName();
         } else {
             redirectToLogin();
         }
 
-        // Initialize Menu
         setupMenu();
 
-        // Button Click Listener for Nearby Laundry
         btnLaundryShops.setOnClickListener(v -> {
             Log.d(TAG, "Nearby Laundry button clicked");
             startActivity(new Intent(MainActivity.this, NearbyLaundry.class));
         });
 
-        // Add click listener for "Periksa Riwayat Pesananmu"
         layoutHistory.setOnClickListener(view -> {
             Intent intent = new Intent(MainActivity.this, OrderHistoryActivity.class);
             startActivity(intent);
@@ -118,7 +106,6 @@ public class MainActivity extends AppCompatActivity {
             return false;
         });
 
-        // Load Laundry Shops
         loadLaundryShops();
     }
 

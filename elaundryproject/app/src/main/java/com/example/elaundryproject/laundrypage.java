@@ -10,10 +10,8 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -21,7 +19,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -99,12 +96,11 @@ public class laundrypage extends AppCompatActivity {
         goLaundryButton.setOnClickListener(v -> {
             String userId = mAuth.getCurrentUser().getUid();
             String selectedCategory = categorySpinner.getSelectedItem().toString();
-            String orderId = UUID.randomUUID().toString();
             String ordermasterid = UUID.randomUUID().toString();
             String orderDate = getCurrentDate();
             String orderStatus = "On Progress";
 
-            placeOrder(orderId, orderDate, userId, orderStatus, currentShopId, selectedCategory, ordermasterid);
+            placeOrder(orderDate, userId, orderStatus, currentShopId, selectedCategory, ordermasterid);
         });
     }
 
@@ -173,10 +169,10 @@ public class laundrypage extends AppCompatActivity {
         return sdf.format(new Date());
     }
 
-    private void placeOrder(String orderId, String orderDate, String userId, String orderStatus, String shopId, String categoryName, String ordermasterid) {
+    private void placeOrder(String orderDate, String userId, String orderStatus, String shopId, String categoryName, String ordermasterid) {
         Long selectedPrice = categoryPriceMap.get(categoryName);
 
-        Order order = new Order(orderId, orderDate, userId, orderStatus, categoryName, selectedPrice, shopId);
+        Order order = new Order(orderDate, userId, orderStatus, categoryName, selectedPrice, shopId);
 
         orderRef.child(ordermasterid).setValue(order)
                 .addOnCompleteListener(task -> {

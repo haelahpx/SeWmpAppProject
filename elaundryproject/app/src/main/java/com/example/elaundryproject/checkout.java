@@ -122,7 +122,7 @@ public class checkout extends AppCompatActivity {
                 });
     }
 
-    // OrderDetails model class
+        // OrderDetails model class
     public static class OrderDetails {
         public String name;
         public String number;

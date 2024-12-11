@@ -42,30 +42,23 @@ public class register extends AppCompatActivity {
         passwordEditText = findViewById(R.id.password);
         registerButton = findViewById(R.id.registerButton);
 
-        // Menangani klik pada link login
         TextView loginLink = findViewById(R.id.loginLink);
 
-        // Membuat teks "Already have an account? Login here"
         SpannableString spannableString = new SpannableString("Already have an account? Login here");
 
-        // Klik pada teks "Login"
         ClickableSpan clickableSpan = new ClickableSpan() {
             @Override
             public void onClick(View widget) {
-                // Arahkan ke halaman login
                 Intent intent = new Intent(register.this, login.class);
                 startActivity(intent);
             }
         };
 
-        // Warna teks "Login"
         ForegroundColorSpan colorSpan = new ForegroundColorSpan(getResources().getColor(R.color.black)); // Ganti dengan warna hitam
 
-        // Pasang span untuk teks "Login"
         spannableString.setSpan(clickableSpan, 25, 30, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);  // Rentang teks "Login"
         spannableString.setSpan(colorSpan, 25, 30, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);  // Rentang teks "Login"
 
-        // Pasang teks ke TextView
         loginLink.setText(spannableString);
         loginLink.setMovementMethod(LinkMovementMethod.getInstance());
 

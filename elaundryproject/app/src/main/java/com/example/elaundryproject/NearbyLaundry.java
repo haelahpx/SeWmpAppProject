@@ -152,10 +152,8 @@ public class NearbyLaundry extends AppCompatActivity {
                         }
                     }
 
-                    // Sort shops by distance
                     laundryShops.sort((shop1, shop2) -> Double.compare(shop1.getDistance(), shop2.getDistance()));
 
-                    // Set adapter
                     LaundryAdapter adapter = new LaundryAdapter(NearbyLaundry.this, laundryShops);
                     laundryListView.setAdapter(adapter);
                     Log.d(TAG, "Adapter set with sorted laundry shops");

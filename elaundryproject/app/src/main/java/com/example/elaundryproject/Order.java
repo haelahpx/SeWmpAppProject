@@ -13,9 +13,8 @@ public class Order {
     public Order() { }
 
     // Parameterized constructor
-    public Order(String orderId, String orderDate, String userId, String orderStatus,
+    public Order(String orderDate, String userId, String orderStatus,
                  String categoryName, Long price, String shopId) {
-        this.orderId = orderId;
         this.orderDate = orderDate;
         this.userId = userId;
         this.orderStatus = orderStatus;
@@ -30,9 +29,6 @@ public class Order {
 
     public String getOrderDate() { return orderDate; }
     public void setOrderDate(String orderDate) { this.orderDate = orderDate; }
-
-    public String getOrderId() { return orderId; }
-    public void setOrderId(String orderId) { this.orderId = orderId; }
 
     public String getOrderStatus() { return orderStatus; }
     public void setOrderStatus(String orderStatus) { this.orderStatus = orderStatus; }

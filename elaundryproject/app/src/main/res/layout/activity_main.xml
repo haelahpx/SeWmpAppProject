@@ -7,7 +7,6 @@
     android:fitsSystemWindows="true"
     android:background="@color/white">
 
-    <!-- AppBar for Toolbar -->
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -16,14 +15,12 @@
         android:layout_marginHorizontal="8pt"
         app:elevation="4dp">
 
-        <!-- Include Toolbar -->
         <include
             layout="@layout/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </com.google.android.material.appbar.AppBarLayout>
 
-    <!-- Main Content Area -->
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -37,7 +34,6 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <!-- Button to open Laundry Shops -->
             <Button
                 android:id="@+id/btnLaundryShops"
                 android:layout_width="match_parent"
@@ -48,7 +44,6 @@
                 android:background="@drawable/bg_circle_radius"
                 android:layout_marginBottom="16dp" />
 
-            <!-- Categories Title -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -58,14 +53,12 @@
                 android:textColor="@color/primaryDark"
                 android:paddingTop="16dp" />
 
-            <!-- RecyclerView for Categories -->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp" />
 
-            <!-- Laundry Shops Title -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -75,14 +68,12 @@
                 android:textColor="@color/primaryDark"
                 android:paddingTop="16dp" />
 
-            <!-- RecyclerView for Nearby Laundry Shops -->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/laundryListView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp" />
 
-            <!-- History Section -->
             <LinearLayout
                 android:id="@+id/layoutHistory"
                 android:layout_width="match_parent"
@@ -110,7 +101,6 @@
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
-    <!-- Bottom Navigation Bar -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationView"
         android:layout_width="match_parent"
