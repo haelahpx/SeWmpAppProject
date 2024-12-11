@@ -7,7 +7,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -17,7 +16,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.elaundryproject.adapters.LaundryShopAdapter;
 import com.example.elaundryproject.adapters.MenuAdapter;
 import com.example.elaundryproject.models.ModelMenu;
-import com.example.elaundryproject.LaundryShop;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -122,14 +120,14 @@ public class MainActivity extends AppCompatActivity {
                     userNameTextView.setText(name);
                     Log.d(TAG, "User name loaded: " + name);
                 } else {
-                    userNameTextView.setText("Selamat datang");
+                    userNameTextView.setText("username");
                     Log.w(TAG, "User name is empty or null");
                 }
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                userNameTextView.setText("Gagal memuat nama pengguna");
+                userNameTextView.setText("cant access the username");
                 Log.e(TAG, "Failed to load user name: " + databaseError.getMessage());
             }
         });
@@ -166,7 +164,6 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
                 Log.d(TAG, "Loaded " + laundryShops.size() + " laundry shops from Firebase");
-
                 LaundryShopAdapter laundryShopAdapter = new LaundryShopAdapter(MainActivity.this, laundryShops);
                 laundryListView.setAdapter(laundryShopAdapter);
             }

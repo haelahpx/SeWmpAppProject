@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -28,6 +29,8 @@ public class login extends AppCompatActivity {
     private FirebaseAuth auth;
     private TextView registerLink;
     private TextView forgotPassword;
+    private SharedPreferences sharedPreferences;
+    private SharedPreferences.Editor editor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +44,13 @@ public class login extends AppCompatActivity {
         forgotPassword = findViewById(R.id.forgotPassword);
 
         auth = FirebaseAuth.getInstance();
+        sharedPreferences = getSharedPreferences("LoginPrefs", MODE_PRIVATE);
+        editor = sharedPreferences.edit();
+
+        boolean isLoggedIn = sharedPreferences.getBoolean("isLoggedIn", false);
+        if (isLoggedIn) {
+            navigateToMainActivity();
+        }
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,11 +76,10 @@ public class login extends AppCompatActivity {
             }
         };
 
-        ForegroundColorSpan colorSpan = new ForegroundColorSpan(getResources().getColor(R.color.black)); // Ganti 'blue' dengan warna yang Anda gunakan
+        ForegroundColorSpan colorSpan = new ForegroundColorSpan(getResources().getColor(R.color.black));
 
-        spannableString.setSpan(clickableSpan, 23, 31, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);  // Memperbaiki rentang
-        spannableString.setSpan(colorSpan, 23, 31, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);  // Memperbaiki rentang
-
+        spannableString.setSpan(clickableSpan, 23, 31, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        spannableString.setSpan(colorSpan, 23, 31, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         registerLink.setText(spannableString);
         registerLink.setMovementMethod(LinkMovementMethod.getInstance());
@@ -99,20 +108,26 @@ public class login extends AppCompatActivity {
         });
     }
 
-
     private void loginUser(String username, String password) {
         auth.signInWithEmailAndPassword(username, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-                    Intent intent = new Intent(login.this, MainActivity.class);
-                    startActivity(intent);
-                    finish();
+                    editor.putBoolean("isLoggedIn", true);
+                    editor.apply();
+
+                    navigateToMainActivity();
                     Toast.makeText(login.this, "Login Successful", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(login.this, "Login Failed", Toast.LENGTH_SHORT).show();
                 }
             }
         });
+    }
+
+    private void navigateToMainActivity() {
+        Intent intent = new Intent(login.this, MainActivity.class);
+        startActivity(intent);
+        finish();
     }
 }
