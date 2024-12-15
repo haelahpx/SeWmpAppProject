@@ -32,22 +32,17 @@ public class OrderHistoryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_history);
 
-        // Initialize RecyclerView
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        // Initialize Firebase Database reference
         databaseReference = FirebaseDatabase.getInstance().getReference("ordermaster");
 
-        // Initialize order list and adapter
         orderList = new ArrayList<>();
         orderAdapter = new OrderAdapter(orderList);
         recyclerView.setAdapter(orderAdapter);
 
-        // Get current user's ID
         String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-        // Fetch orders for the current user
         databaseReference.orderByChild("userId").equalTo(currentUserId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {

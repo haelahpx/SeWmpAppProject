@@ -94,7 +94,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:text="Order Status and History"
+                    android:text="Periksa Riwayat Pesananmu"
                     android:textSize="16sp"
                     android:textColor="@color/white" />
             </LinearLayout>

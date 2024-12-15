@@ -8,10 +8,8 @@ public class LaundryShop {
     public double latitude;
     public double longitude;
 
-    // Default constructor for Firebase
     public LaundryShop() {}
 
-    // Constructor with parameters (Ensure latitude and longitude are properly initialized)
     public LaundryShop(String name, String address, String phone, double distance, double latitude, double longitude) {
         this.name = name;
         this.address = address;
@@ -21,7 +19,6 @@ public class LaundryShop {
         this.longitude = longitude;
     }
 
-    // Getters and Setters
     public String getName() {
         return name;
     }
@@ -54,17 +51,15 @@ public class LaundryShop {
         this.distance = distance;
     }
 
-    // Getter for latitude
     public double getLatitude() {
         return latitude;
     }
 
-    // Getter for longitude
     public double getLongitude() {
         return longitude;
     }
 
-    // Setters for latitude and longitude
+
     public void setLatitude(double latitude) {
         this.latitude = latitude;
     }

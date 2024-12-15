@@ -41,7 +41,7 @@ public class laundrypage extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private DatabaseReference orderRef;
 
-    private String currentShopId; // Menyimpan shop_id
+    private String currentShopId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,7 +107,6 @@ public class laundrypage extends AppCompatActivity {
     private void fetchLaundryDetailsByShopName(String shopName) {
         DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("laundry_shops");
 
-        // Cari toko berdasarkan shopName, lalu ambil shop_id
         databaseRef.orderByChild("name").equalTo(shopName).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {

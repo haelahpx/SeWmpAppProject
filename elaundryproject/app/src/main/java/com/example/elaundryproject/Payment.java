@@ -7,7 +7,6 @@ public class Payment {
     private String paymentStatus;
     private String paymentDate;
 
-    // Default constructor required for Firebase
     public Payment() {}
 
     public Payment(String paymentId, String orderMasterId, String paymentMethod, String paymentStatus, String paymentDate) {
@@ -18,7 +17,6 @@ public class Payment {
         this.paymentDate = paymentDate;
     }
 
-    // Getters and setters
     public String getPaymentId() {
         return paymentId;
     }

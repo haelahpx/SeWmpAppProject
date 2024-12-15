@@ -6,13 +6,11 @@ public class Order {
     private String orderId;
     private String orderStatus;
     private String userId;
-    private Long price; // Add price field
-    private String shopId; // Add shopId field
+    private Long price;
+    private String shopId;
 
-    // Default constructor required for calls to DataSnapshot.getValue(Order.class)
     public Order() { }
 
-    // Parameterized constructor
     public Order(String orderDate, String userId, String orderStatus,
                  String categoryName, Long price, String shopId) {
         this.orderDate = orderDate;
@@ -23,7 +21,6 @@ public class Order {
         this.shopId = shopId;
     }
 
-    // Getters and Setters
     public String getCategoryName() { return categoryName; }
     public void setCategoryName(String categoryName) { this.categoryName = categoryName; }
 

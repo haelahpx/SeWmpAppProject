@@ -6,14 +6,12 @@
     android:layout_height="match_parent"
     android:background="#FFFFFF">
 
-    <!-- Main Content Area -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:padding="16dp">
 
-        <!-- Laundry Name -->
         <TextView
             android:id="@+id/laundryName"
             android:layout_width="wrap_content"
@@ -24,7 +22,6 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="16dp" />
 
-        <!-- Image below the laundry name -->
         <ImageView
             android:id="@+id/laundryImageView"
             android:layout_width="match_parent"
@@ -33,7 +30,6 @@
             android:src="@drawable/ic_laundry_shop"
             android:layout_marginBottom="16dp" />
 
-        <!-- Address Heading -->
         <TextView
             android:id="@+id/addressHeading"
             android:layout_width="wrap_content"
@@ -43,7 +39,6 @@
             android:textStyle="bold"
             android:layout_marginBottom="4dp" />
 
-        <!-- Address -->
         <TextView
             android:id="@+id/addressTextView"
             android:layout_width="wrap_content"
@@ -52,7 +47,6 @@
             android:textSize="16sp"
             android:layout_marginBottom="16dp" />
 
-        <!-- Phone Heading -->
         <TextView
             android:id="@+id/phoneHeading"
             android:layout_width="wrap_content"
@@ -62,7 +56,6 @@
             android:textStyle="bold"
             android:layout_marginBottom="4dp" />
 
-        <!-- Phone Number -->
         <TextView
             android:id="@+id/phoneTextView"
             android:layout_width="wrap_content"
@@ -71,7 +64,6 @@
             android:textSize="16sp"
             android:layout_marginBottom="16dp" />
 
-        <!-- Price Heading -->
         <TextView
             android:id="@+id/priceHeading"
             android:layout_width="wrap_content"
@@ -81,7 +73,6 @@
             android:textStyle="bold"
             android:layout_marginBottom="4dp" />
 
-        <!-- Price -->
         <TextView
             android:id="@+id/priceTextView"
             android:layout_width="wrap_content"
@@ -90,7 +81,6 @@
             android:textSize="16sp"
             android:layout_marginBottom="16dp" />
 
-        <!-- Category Heading -->
         <TextView
             android:id="@+id/categoryHeading"
             android:layout_width="wrap_content"
@@ -100,7 +90,6 @@
             android:textStyle="bold"
             android:layout_marginBottom="4dp" />
 
-        <!-- Spinner -->
         <Spinner
             android:id="@+id/categorySpinner"
             android:layout_width="match_parent"
@@ -110,7 +99,6 @@
             android:padding="8dp"
             android:popupBackground="#FFFFFF"/>
 
-        <!-- GO Laundry Button -->
         <Button
             android:id="@+id/goLaundryButton"
             android:layout_width="150dp"
@@ -124,7 +112,6 @@
             android:textSize="16sp" />
     </LinearLayout>
 
-    <!-- Bottom Navigation Bar -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationView"
         android:layout_width="match_parent"

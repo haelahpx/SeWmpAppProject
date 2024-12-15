@@ -44,7 +44,6 @@ public class NearbyLaundry extends AppCompatActivity {
 
         setContentView(R.layout.activity_nearbylaundry);
 
-        // Initialize views and check for null
         locationTextView = findViewById(R.id.locationTextView);
         if (locationTextView == null) {
             Log.e(TAG, "locationTextView not found!");
@@ -59,10 +58,8 @@ public class NearbyLaundry extends AppCompatActivity {
         laundryListView.setLayoutManager(new LinearLayoutManager(this));
         Log.d(TAG, "RecyclerView initialized");
 
-        // Initialize location client
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
-        // Request permissions
         requestPermissionLauncher = registerForActivityResult(
                 new ActivityResultContracts.RequestMultiplePermissions(),
                 result -> {

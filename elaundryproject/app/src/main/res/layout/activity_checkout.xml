@@ -16,7 +16,6 @@
         android:elevation="4dp"
         android:clipToOutline="true">
 
-        <!-- Name Input -->
         <EditText
             android:id="@+id/et_name"
             android:layout_width="match_parent"
@@ -26,7 +25,6 @@
             android:padding="12dp"
             android:layout_marginBottom="12dp" />
 
-        <!-- Number Input -->
         <EditText
             android:id="@+id/et_number"
             android:layout_width="match_parent"
@@ -36,7 +34,6 @@
             android:padding="12dp"
             android:layout_marginBottom="16dp" />
 
-        <!-- Radio Buttons for Delivery or Pickup -->
         <RadioGroup
             android:id="@+id/radio_group"
             android:layout_width="match_parent"
@@ -59,7 +56,6 @@
                 android:text="Pick up laundry" />
         </RadioGroup>
 
-        <!-- Address Input -->
         <EditText
             android:id="@+id/et_address"
             android:layout_width="match_parent"
@@ -70,7 +66,6 @@
             android:gravity="start|top"
             android:layout_marginBottom="16dp" />
 
-        <!-- Payment Method -->
         <TextView
             android:id="@+id/tv_payment"
             android:layout_width="wrap_content"
@@ -102,7 +97,6 @@
                 android:text="Cash on delivery" />
         </RadioGroup>
 
-        <!-- Confirm Order Button -->
         <Button
             android:id="@+id/btn_confirm"
             android:layout_width="match_parent"

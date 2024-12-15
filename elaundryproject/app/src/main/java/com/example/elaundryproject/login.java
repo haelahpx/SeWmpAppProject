@@ -1,10 +1,9 @@
 package com.example.elaundryproject;
 
+import android.content.SharedPreferences;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -24,15 +23,15 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class login extends AppCompatActivity {
+
     private Button login;
     private EditText userName, passWord;
     private FirebaseAuth auth;
     private TextView registerLink;
     private TextView forgotPassword;
-    private SharedPreferences sharedPreferences;
-    private SharedPreferences.Editor editor;
 
-    @Override
+    private SharedPreferences sharedPreferences;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
@@ -44,13 +43,7 @@ public class login extends AppCompatActivity {
         forgotPassword = findViewById(R.id.forgotPassword);
 
         auth = FirebaseAuth.getInstance();
-        sharedPreferences = getSharedPreferences("LoginPrefs", MODE_PRIVATE);
-        editor = sharedPreferences.edit();
-
-        boolean isLoggedIn = sharedPreferences.getBoolean("isLoggedIn", false);
-        if (isLoggedIn) {
-            navigateToMainActivity();
-        }
+        sharedPreferences = getSharedPreferences("UserPrefs", MODE_PRIVATE);
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,7 +60,6 @@ public class login extends AppCompatActivity {
         });
 
         SpannableString spannableString = new SpannableString("Don't have an account? Register here");
-
         ClickableSpan clickableSpan = new ClickableSpan() {
             @Override
             public void onClick(@NonNull View widget) {
@@ -77,7 +69,6 @@ public class login extends AppCompatActivity {
         };
 
         ForegroundColorSpan colorSpan = new ForegroundColorSpan(getResources().getColor(R.color.black));
-
         spannableString.setSpan(clickableSpan, 23, 31, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         spannableString.setSpan(colorSpan, 23, 31, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
@@ -88,7 +79,6 @@ public class login extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String email = userName.getText().toString().trim();
-
                 if (TextUtils.isEmpty(email)) {
                     Toast.makeText(login.this, "Please enter your registered email", Toast.LENGTH_SHORT).show();
                 } else {
@@ -113,21 +103,20 @@ public class login extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-                    editor.putBoolean("isLoggedIn", true);
+                    // Save login status in SharedPreferences
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putBoolean("isLoggedIn", true);  // Set login status
+                    editor.putString("username", username);  // Save the username
                     editor.apply();
 
-                    navigateToMainActivity();
+                    Intent intent = new Intent(login.this, MainActivity.class);
+                    startActivity(intent);
+                    finish();
                     Toast.makeText(login.this, "Login Successful", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(login.this, "Login Failed", Toast.LENGTH_SHORT).show();
                 }
             }
         });
-    }
-
-    private void navigateToMainActivity() {
-        Intent intent = new Intent(login.this, MainActivity.class);
-        startActivity(intent);
-        finish();
     }
 }

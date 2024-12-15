@@ -25,7 +25,7 @@ public class checkout extends AppCompatActivity {
     private Button btnConfirm;
 
     private DatabaseReference orderDetailsRef;
-    private long price; // Declare price here
+    private long price;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,27 +42,21 @@ public class checkout extends AppCompatActivity {
         rbCod = findViewById(R.id.rb_cod);
         btnConfirm = findViewById(R.id.btn_confirm);
 
-        // Initialize Firebase database reference
         orderDetailsRef = FirebaseDatabase.getInstance().getReference("orderdetails");
 
-        // Get Intent data
         String ordermasterid = getIntent().getStringExtra("ordermasterid");
-        price = getIntent().getLongExtra("price", 0); // Receive the price from the Intent
+        price = getIntent().getLongExtra("price", 0);
 
-        // Log the received price
         Log.d("Checkout", "Received price: " + price);
         Toast.makeText(this, "Price: " + price, Toast.LENGTH_SHORT).show();
 
-        // Set up the confirm order button click listener
         btnConfirm.setOnClickListener(v -> {
             String name = etName.getText().toString().trim();
             String number = etNumber.getText().toString().trim();
             String address = etAddress.getText().toString().trim();
 
-            // Determine delivery method
             String deliveryMethod = rbDeliver.isChecked() ? "Deliver laundry" : rbPickup.isChecked() ? "Pick up laundry" : "Not specified";
 
-            // Determine payment method and status
             String paymentMethod = rbQris.isChecked() ? "QRIS" : rbCod.isChecked() ? "Cash on delivery" : "Not specified";
             String paymentStatus = paymentMethod.equals("QRIS") ? "Pending" : "COD - Pending";
 
@@ -71,31 +65,27 @@ public class checkout extends AppCompatActivity {
                 return;
             }
 
-            // Create and save order details
-            String orderDetailsId = UUID.randomUUID().toString();  // Generate unique ID for order details
+            String orderDetailsId = UUID.randomUUID().toString();
             OrderDetails orderDetails = new OrderDetails(name, number, address, deliveryMethod, paymentMethod, price);
 
-            // Save order details to Firebase
             orderDetailsRef.child(ordermasterid).child(orderDetailsId).setValue(orderDetails)
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
-                            // Save payment data if "Cash on Delivery" is selected
                             if (paymentMethod.equals("Cash on delivery")) {
-                                String paymentId = UUID.randomUUID().toString();  // Generate payment ID
-                                savePaymentData(ordermasterid, paymentMethod, paymentStatus, paymentId);  // Pass paymentId
+                                String paymentId = UUID.randomUUID().toString();
+                                savePaymentData(ordermasterid, paymentMethod, paymentStatus, paymentId);
                                 Toast.makeText(checkout.this, "Order confirmed! Payment saved successfully.", Toast.LENGTH_SHORT).show();
                             } else {
-                                // If QRIS is selected, navigate to QR Code activity
-                                String paymentId = UUID.randomUUID().toString();  // Generate payment ID for QRIS
+                                String paymentId = UUID.randomUUID().toString();
                                 Intent intent = new Intent(checkout.this, qrcode.class);
                                 intent.putExtra("ordermasterid", ordermasterid);
                                 intent.putExtra("price", price);
                                 intent.putExtra("paymentMethod", paymentMethod);
                                 intent.putExtra("paymentStatus", paymentStatus);
-                                intent.putExtra("paymentId", paymentId);  // Add paymentId to the intent
+                                intent.putExtra("paymentId", paymentId);
                                 startActivity(intent);
                             }
-                            finish(); // Close the activity after saving
+                            finish();
                         } else {
                             Log.e("Checkout", "Failed to save order details", task.getException());
                             Toast.makeText(checkout.this, "Failed to save order details: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
@@ -105,13 +95,10 @@ public class checkout extends AppCompatActivity {
     }
 
     private void savePaymentData(String ordermasterid, String paymentMethod, String paymentStatus, String paymentId) {
-        // Get current timestamp
         String paymentDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
 
-        // Create Payment object
         Payment payment = new Payment(paymentId, ordermasterid, paymentMethod, paymentStatus, paymentDate);
 
-        // Save to Firebase
         DatabaseReference paymentRef = FirebaseDatabase.getInstance().getReference("payment");
         paymentRef.child(paymentId).setValue(payment)
                 .addOnSuccessListener(aVoid -> {
@@ -122,7 +109,6 @@ public class checkout extends AppCompatActivity {
                 });
     }
 
-        // OrderDetails model class
     public static class OrderDetails {
         public String name;
         public String number;
@@ -140,12 +126,10 @@ public class checkout extends AppCompatActivity {
             this.price = price;
         }
 
-        // Empty constructor required for Firebase
         public OrderDetails() {
         }
     }
 
-    // Payment model class
     public static class Payment {
         public String paymentId;
         public String orderMasterId;
@@ -161,7 +145,6 @@ public class checkout extends AppCompatActivity {
             this.paymentDate = paymentDate;
         }
 
-        // Empty constructor required for Firebase
         public Payment() {
         }
     }

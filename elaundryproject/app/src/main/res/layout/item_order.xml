@@ -8,7 +8,6 @@
     android:padding="16dp"
     android:background="@drawable/bg_item_order">
 
-    <!-- Nama Kategori -->
     <TextView
         android:id="@+id/categoryName"
         android:layout_width="wrap_content"
@@ -17,7 +16,6 @@
         android:textStyle="bold"
         android:text="Dry cleaning" />
 
-    <!-- Tanggal Pesanan -->
     <TextView
         android:id="@+id/orderDate"
         android:layout_width="wrap_content"
@@ -26,7 +24,6 @@
         android:textColor="@color/gray"
         android:text="2024-12-08" />
 
-    <!-- Status Pesanan -->
     <TextView
         android:id="@+id/orderStatus"
         android:layout_width="wrap_content"

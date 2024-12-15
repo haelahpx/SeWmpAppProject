@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- Main Content Area -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -13,7 +12,6 @@
         android:padding="16dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <!-- Edit Text for Username -->
         <EditText
             android:id="@+id/editUsername"
             android:layout_width="match_parent"
@@ -23,7 +21,6 @@
             android:padding="12dp"
             android:textSize="16sp" />
 
-        <!-- Save Button -->
         <Button
             android:id="@+id/saveButton"
             android:layout_width="match_parent"
@@ -35,7 +32,6 @@
             android:padding="12dp"
             android:textSize="16sp" />
 
-        <!-- Logout Button -->
         <Button
             android:id="@+id/logoutButton"
             android:layout_width="match_parent"
@@ -48,7 +44,6 @@
             android:textSize="16sp" />
     </LinearLayout>
 
-    <!-- Bottom Navigation Bar -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationView"
         android:layout_width="match_parent"

@@ -1,12 +1,14 @@
 package com.example.elaundryproject;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -16,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.elaundryproject.adapters.LaundryShopAdapter;
 import com.example.elaundryproject.adapters.MenuAdapter;
 import com.example.elaundryproject.models.ModelMenu;
+import com.example.elaundryproject.LaundryShop;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -47,6 +50,8 @@ public class MainActivity extends AppCompatActivity {
     private static final String USERS_KEY = "users";
     private static final String NAME_KEY = "name";
 
+    private SharedPreferences sharedPreferences;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,6 +62,8 @@ public class MainActivity extends AppCompatActivity {
         userNameTextView = findViewById(R.id.userNameTextView);
         btnLaundryShops = findViewById(R.id.btnLaundryShops);
         layoutHistory = findViewById(R.id.layoutHistory);
+
+
 
         ImageView profileIcon = findViewById(R.id.profileIcon);
         profileIcon.setOnClickListener(v -> {
@@ -74,6 +81,16 @@ public class MainActivity extends AppCompatActivity {
             loadUserName();
         } else {
             redirectToLogin();
+        }
+
+        sharedPreferences = getSharedPreferences("UserPrefs", MODE_PRIVATE);
+        auth = FirebaseAuth.getInstance();
+
+        boolean isLoggedIn = sharedPreferences.getBoolean("isLoggedIn", false);
+        if (!isLoggedIn) {
+            redirectToLogin();
+        } else {
+            String username = sharedPreferences.getString("username", "");
         }
 
         setupMenu();
@@ -120,25 +137,25 @@ public class MainActivity extends AppCompatActivity {
                     userNameTextView.setText(name);
                     Log.d(TAG, "User name loaded: " + name);
                 } else {
-                    userNameTextView.setText("username");
+                    userNameTextView.setText("Selamat datang");
                     Log.w(TAG, "User name is empty or null");
                 }
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                userNameTextView.setText("cant access the username");
+                userNameTextView.setText("Gagal memuat nama pengguna");
                 Log.e(TAG, "Failed to load user name: " + databaseError.getMessage());
             }
         });
     }
 
     private void redirectToLogin() {
-        Log.d(TAG, "User not logged in. Redirecting to login page...");
         Intent intent = new Intent(MainActivity.this, login.class);
         startActivity(intent);
         finish();
     }
+
 
     private void setupMenu() {
         modelMenuList.add(new ModelMenu("Dry Cleaning", R.drawable.ic_dry_cleaning));
@@ -164,6 +181,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
                 Log.d(TAG, "Loaded " + laundryShops.size() + " laundry shops from Firebase");
+
                 LaundryShopAdapter laundryShopAdapter = new LaundryShopAdapter(MainActivity.this, laundryShops);
                 laundryListView.setAdapter(laundryShopAdapter);
             }

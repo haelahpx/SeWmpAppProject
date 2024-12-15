@@ -37,7 +37,6 @@ public class LaundryAdapter extends RecyclerView.Adapter<LaundryAdapter.ViewHold
                 String.format("Lat: %.6f, Lng: %.6f", shop.getLatitude(), shop.getLongitude())
         );
 
-        // Klik item untuk membuka laundrypage
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, laundrypage.class);
             intent.putExtra("shopName", shop.getName());
